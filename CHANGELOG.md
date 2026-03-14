@@ -1,17 +1,3 @@
-## Unreleased
-
-### Added
-
-- No changes yet.
-
-### Changed
-
-- No changes yet.
-
-### Fixed
-
-- No changes yet.
-
 ## 0.2.0
 
 ### Added
