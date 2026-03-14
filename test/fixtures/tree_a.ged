@@ -1,0 +1,25 @@
+0 HEAD
+1 SOUR gedcom_matcher_test
+1 GEDC
+2 VERS 5.5.1
+0 @I1@ INDI
+1 NAME Jean /Martin/
+1 SEX M
+1 BIRT
+2 DATE 12 JAN 1900
+2 PLAC Lyon, Rhone, France
+1 FAMS @F1@
+0 @I2@ INDI
+1 NAME Jeanne /Durand/
+1 SEX F
+1 BIRT
+2 DATE 08 MAR 1902
+2 PLAC Grenoble, Isere, France
+1 FAMS @F1@
+0 @F1@ FAM
+1 HUSB @I1@
+1 WIFE @I2@
+1 MARR
+2 DATE 14 JUN 1922
+2 PLAC Lyon, Rhone, France
+0 TRLR
