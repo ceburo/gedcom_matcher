@@ -2,15 +2,15 @@
 
 ### Added
 
-- 
+- No changes yet.
 
 ### Changed
 
-- 
+- No changes yet.
 
 ### Fixed
 
-- 
+- No changes yet.
 
 ## 0.1.0
 

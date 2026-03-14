@@ -1,0 +1,14 @@
+# Local tooling and editor metadata
+.fvm/
+.vscode/
+.idea/
+
+# CI or local automation metadata not needed in package tarball
+.github/
+
+# Local output artifacts
+result.csv
+result.json
+
+# OS files
+.DS_Store

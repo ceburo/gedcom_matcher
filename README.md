@@ -1,27 +1,42 @@
-# gedcom_matcher
+[![Pub Version](https://img.shields.io/pub/v/gedcom_matcher?color=blue)](https://pub.dev/packages/gedcom_matcher)
+[![Pub Likes](https://img.shields.io/pub/likes/gedcom_matcher?color=red)](https://pub.dev/packages/gedcom_matcher)
+[![Pub Points](https://img.shields.io/pub/points/gedcom_matcher?label=pub%20points&logo=dart)](https://pub.dev/packages/gedcom_matcher)
 
-[![pub package](https://img.shields.io/pub/v/gedcom_matcher.svg)](https://pub.dev/packages/gedcom_matcher)
-[![Dart SDK](https://img.shields.io/badge/dart-%5E3.10.4-blue.svg)](https://dart.dev)
+# GEDCOM Matcher
 
-`gedcom_matcher` is a Dart CLI for comparing two GEDCOM files (`.ged`) and
-finding likely person matches with a confidence score.
+A standalone Dart package and CLI to compare two GEDCOM files and detect likely
+person matches with a confidence score.
 
 ## Features
 
-- Compare two GEDCOM datasets.
-- Compute a confidence score from `0` to `100`.
-- Configure a minimum confidence threshold (`--min-confidence`).
-- Use repeatable output formats (`table`, `json`, `csv`, `markdown`).
-- Export results with `--output`, with format inferred from file extension.
-- Show a progress bar in interactive terminals.
+- **Confidence-based Matching**: Match people across two GEDCOM datasets with a
+	score from `0` to `100`.
+- **Configurable Heuristics**: Tune matching weights for name, birth date,
+	birth place, death date, sex, and spouse.
+- **Threshold Filtering**: Keep only matches above a minimum confidence level
+	(`--min-confidence`).
+- **Multiple Output Formats**: Render output as `table`, `json`, `csv`, or
+	`markdown`.
+- **Export Support**: Write results to a file via `--output`, with format
+	inferred from extension.
+- **Progress Feedback**: Show a progress bar in interactive terminals.
+- **Library + CLI**: Use it as a command-line tool or directly from Dart code.
 
-## Installation
+## Usage
+
+### CLI
 
 ```bash
-fvm dart pub get
+fvm dart run bin/gedcom_matcher.dart [options] file_a.ged file_b.ged
 ```
 
-## Quick Start
+Show help:
+
+```bash
+fvm dart run bin/gedcom_matcher.dart --help
+```
+
+Quick example:
 
 ```bash
 fvm dart run bin/gedcom_matcher.dart \
@@ -39,32 +54,78 @@ fvm dart run bin/gedcom_matcher.dart \
 	data/a.ged data/b.ged
 ```
 
-## CLI Usage
-
-```bash
-fvm dart run bin/gedcom_matcher.dart [options] file_a.ged file_b.ged
-```
-
-Show help:
-
-```bash
-fvm dart run bin/gedcom_matcher.dart --help
-```
-
-Example with repeatable formats and export:
+Multiple formats in one run:
 
 ```bash
 fvm dart run bin/gedcom_matcher.dart \
 	--format table \
-	--format json \
+	--format markdown \
 	--min-confidence 70 \
-	--output results.csv \
 	data/a.ged data/b.ged
 ```
 
-## Main Options
+### Dart API
 
-- `-h, --help`: Display help.
+```dart
+import 'package:gedcom_matcher/gedcom_matcher.dart';
+
+void main() {
+	const parser = GedcomParser();
+	const matcher = GedcomMatcher();
+	const formatter = MatchOutputFormatter();
+
+	const leftGedcom = '''
+0 @I1@ INDI
+1 NAME John /Martin/
+1 SEX M
+1 BIRT
+2 DATE 12 JAN 1900
+2 PLAC Lyon
+0 TRLR
+''';
+
+	const rightGedcom = '''
+0 @I9@ INDI
+1 NAME Johan /Martin/
+1 SEX M
+1 BIRT
+2 DATE 12 JAN 1900
+2 PLAC Lyon
+0 TRLR
+''';
+
+	final leftPeople = parser.parse(leftGedcom);
+	final rightPeople = parser.parse(rightGedcom);
+
+	final results = matcher.match(
+		leftPeople: leftPeople,
+		rightPeople: rightPeople,
+		options: const MatchOptions(minConfidence: 70),
+	);
+
+	final output = formatter.format(results, OutputFormat.table, useColor: false);
+	print(output);
+}
+```
+
+## Installation
+
+Add `gedcom_matcher` to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+	gedcom_matcher: ^0.1.0
+```
+
+Then install dependencies:
+
+```bash
+fvm dart pub get
+```
+
+## Main CLI Options
+
+- `-h, --help`: Show help.
 - `-f, --format`: Output format (repeatable).
 - `-o, --output`: Output file path.
 - `--min-confidence`: Minimum threshold between `0` and `100`.
@@ -75,36 +136,56 @@ fvm dart run bin/gedcom_matcher.dart \
 - `--weight-sex`
 - `--weight-spouse`
 - `--max-candidates`: Limit comparisons per person to improve performance.
-- `--no-color`: Disable ANSI colors.
+- `--no-color`: Disable ANSI color output.
 
-Example for large files:
+## Matching Criteria
 
-```bash
-fvm dart run bin/gedcom_matcher.dart \
-	--min-confidence 70 \
-	--max-candidates 200 \
-	--output results.json \
-	file_a.ged file_b.ged
-```
+Current matching logic uses a weighted combination of:
 
-## MVP Matching Criteria
+- Given name + surname (normalized)
+- Birth date
+- Birth place
+- Death date
+- Sex
+- Spouse name (lightly weighted)
 
-- Normalized given name + surname.
-- Birth date.
-- Birth place.
-- Death date.
-- Sex.
-- Spouse first name + last name (lightly weighted).
+GEDCOM parsing relies on `gedcom_parser` to support common GEDCOM structures.
 
-## GEDCOM Parsing
+## Development
 
-Parsing relies on the `gedcom_parser` package to support common GEDCOM
-structures while keeping the implementation focused and simple.
-
-## Development Checks
+Run formatting, static analysis, and tests:
 
 ```bash
 fvm dart format lib test example
 fvm dart analyze
 fvm dart test
 ```
+
+## Publishing
+
+Before publishing a new version:
+
+1. Update `version` in `pubspec.yaml`.
+2. Add release notes in `CHANGELOG.md`.
+3. Run development checks.
+4. Run a dry run:
+
+```bash
+fvm dart pub publish --dry-run
+```
+
+5. Publish:
+
+```bash
+fvm dart pub publish
+```
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Add or update tests for your changes.
+4. Run the development checks.
+5. Open a pull request.
