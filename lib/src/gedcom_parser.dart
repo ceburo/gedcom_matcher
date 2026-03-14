@@ -2,9 +2,15 @@ import 'package:gedcom_parser/gedcom_parser.dart' as gp;
 
 import 'models.dart';
 
+/// Parses GEDCOM text into `PersonRecord` objects used by this package.
 class GedcomParser {
+  /// Creates a GEDCOM parser adapter.
   const GedcomParser();
 
+  /// Parses a full GEDCOM document string.
+  ///
+  /// Returns one `PersonRecord` per parsed individual and fills spouse names
+  /// from family links when available.
   List<PersonRecord> parse(String content) {
     final parser = gp.GedcomParser();
     final lines = content.split(RegExp(r'\r?\n'));

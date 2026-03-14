@@ -1,6 +1,6 @@
 name: gedcom_matcher
 description: A configurable CLI to compare two GEDCOM files and detect likely person matches.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/ceburo/gedcom_matcher
 repository: https://github.com/ceburo/gedcom_matcher
 issue_tracker: https://github.com/ceburo/gedcom_matcher/issues

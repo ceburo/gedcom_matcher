@@ -114,7 +114,7 @@ Add `gedcom_matcher` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-	gedcom_matcher: ^0.1.0
+	gedcom_matcher: ^0.2.0
 ```
 
 Then install dependencies:

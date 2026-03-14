@@ -1,11 +1,20 @@
 import 'models.dart';
 import 'normalizer.dart';
 
+/// Callback invoked as matching progresses.
+///
+/// `current` is 1-based and `total` is the number of left-side people.
 typedef ProgressCallback = void Function(int current, int total);
 
+/// Computes best person matches between two GEDCOM datasets.
 class GedcomMatcher {
+  /// Creates a matching engine instance.
   const GedcomMatcher();
 
+  /// Matches `leftPeople` against `rightPeople` and returns best matches.
+  ///
+  /// The result list contains at most one best candidate per left-side person,
+  /// filtered by `options.minConfidence`, and sorted by descending confidence.
   List<MatchResult> match({
     required List<PersonRecord> leftPeople,
     required List<PersonRecord> rightPeople,

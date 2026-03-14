@@ -2,12 +2,23 @@ import 'dart:convert';
 
 import 'models.dart';
 
+/// Supported output formats for match rendering/export.
 enum OutputFormat {
+  /// Plain ASCII table format.
   table,
+
+  /// JSON format.
   json,
+
+  /// CSV format.
   csv,
+
+  /// Markdown table format.
   markdown;
 
+  /// Parses an output-format string.
+  ///
+  /// Accepted values are `table`, `json`, `csv`, `markdown`, and `md`.
   static OutputFormat parse(String value) {
     return switch (value.toLowerCase().trim()) {
       'table' => OutputFormat.table,
@@ -19,9 +30,14 @@ enum OutputFormat {
   }
 }
 
+/// Formats match results into table, JSON, CSV, or Markdown output.
 class MatchOutputFormatter {
+  /// Creates an output formatter.
   const MatchOutputFormatter();
 
+  /// Formats `results` using the selected [format].
+  ///
+  /// If [summary] is omitted, it is computed from the provided results.
   String format(
     List<MatchResult> results,
     OutputFormat format, {
@@ -174,17 +190,25 @@ class MatchOutputFormatter {
   }
 }
 
+/// Aggregated metrics about a matching run.
 class MatchSummary {
+  /// Creates a match summary object.
   const MatchSummary({
     required this.comparedPeople,
     required this.averageConfidence,
     required this.fullConfidenceCount,
   });
 
+  /// Number of left-side people compared.
   final int comparedPeople;
+
+  /// Average confidence across all returned matches.
   final double averageConfidence;
+
+  /// Number of returned matches with confidence equal to `100`.
   final int fullConfidenceCount;
 
+  /// Builds a summary from [results] and the number of compared people.
   static MatchSummary fromResults({
     required List<MatchResult> results,
     required int comparedPeople,
@@ -212,6 +236,7 @@ class MatchSummary {
     );
   }
 
+  /// Converts this summary to a JSON-serializable map.
   Map<String, Object> toJson() => {
     'compared_people': comparedPeople,
     'average_confidence': double.parse(averageConfidence.toStringAsFixed(2)),

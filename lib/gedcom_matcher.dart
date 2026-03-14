@@ -1,3 +1,7 @@
+/// Public API for the `gedcom_matcher` package.
+///
+/// Import this library to access GEDCOM parsing, matching, output formatting,
+/// and CLI entrypoints.
 library;
 
 export 'src/cli.dart';

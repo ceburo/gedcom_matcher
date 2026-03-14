@@ -10,6 +10,9 @@ import 'output.dart';
 const String _usage =
     'Usage: gedcom_matcher [options] <file_a.ged> <file_b.ged>';
 
+/// Runs the command-line interface.
+///
+/// Returns a process-compatible exit code.
 Future<int> runCli(List<String> arguments) async {
   final parser = ArgParser()
     ..addFlag('help', abbr: 'h', negatable: false, help: 'Show help')
